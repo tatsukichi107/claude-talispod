@@ -1,0 +1,786 @@
+/* =========================================================
+   TalisPod  css/app.css  v0.79
+   ========================================================= */
+
+/* ---------------------------------------------------------
+   CSS Variables
+   --------------------------------------------------------- */
+:root {
+  --bg:          #0d0d1a;
+  --bg-panel:    #1a1a2e;
+  --bg-panel2:   #22223a;
+  --border:      #3333aa;
+  --border-sub:  #2a2a55;
+
+  --text:        #eeeeff;
+  --muted:       #8888bb;
+  --gold:        #ffcc00;
+  --red:         #ff3333;
+  --green:       #44cc44;
+  --orange:      #ffaa00;
+
+  /* 属性カラー */
+  --col-volcano:    #ff5533;
+  --col-tornado:    #88ddff;
+  --col-earthquake: #cc9944;
+  --col-storm:      #3399ff;
+  --col-neutral:    #aaaaaa;
+
+  /* レイアウト */
+  --header-h:   88px;
+  --tab-h:      64px;
+  --safe-b:     env(safe-area-inset-bottom, 0px);
+
+  --radius:     12px;
+  --radius-sm:  8px;
+}
+
+/* ---------------------------------------------------------
+   Reset / Base
+   --------------------------------------------------------- */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+  height: 100%;
+  overflow: hidden;
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Noto Sans JP', 'Hiragino Kaku Gothic Pro', sans-serif;
+  font-size: 14px;
+  line-height: 1.5;
+  -webkit-tap-highlight-color: transparent;
+}
+
+button {
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 13px;
+  border: none;
+  outline: none;
+  border-radius: var(--radius-sm);
+  transition: opacity .15s, transform .1s;
+}
+button:active { transform: scale(0.96); }
+button:disabled { opacity: .4; cursor: default; transform: none; }
+
+input, textarea {
+  font-family: inherit;
+  font-size: 14px;
+  background: var(--bg);
+  color: var(--text);
+  border: 1px solid var(--border-sub);
+  border-radius: var(--radius-sm);
+  padding: 8px 10px;
+  outline: none;
+  width: 100%;
+}
+input:focus, textarea:focus { border-color: var(--border); }
+textarea { resize: vertical; }
+
+hr { border: none; border-top: 1px solid var(--border-sub); }
+
+/* ---------------------------------------------------------
+   Button styles
+   --------------------------------------------------------- */
+.btn-primary {
+  background: var(--border);
+  color: #fff;
+  padding: 12px 20px;
+  width: 100%;
+  font-size: 14px;
+  border-radius: var(--radius);
+}
+.btn-primary:hover { opacity: .85; }
+
+.btn-sub {
+  background: var(--bg-panel2);
+  color: var(--text);
+  border: 1px solid var(--border-sub);
+  padding: 8px 14px;
+}
+.btn-sub:hover { border-color: var(--border); }
+
+.btn-ghost {
+  background: transparent;
+  color: var(--muted);
+  border: 1px solid var(--border-sub);
+  padding: 8px 14px;
+}
+.btn-ghost:hover { color: var(--text); border-color: var(--border); }
+
+.btn-sm { font-size: 12px; padding: 6px 10px; }
+
+.btn-danger {
+  background: #441111;
+  color: var(--red);
+  border: 1px solid var(--red);
+  padding: 8px 14px;
+}
+
+/* ---------------------------------------------------------
+   Header
+   --------------------------------------------------------- */
+.header {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  height: var(--header-h);
+  background: rgba(13,13,26,.96);
+  border-bottom: 1px solid var(--border-sub);
+  backdrop-filter: blur(8px);
+  z-index: 100;
+}
+.header-inner {
+  height: 100%;
+  padding: 8px 14px 6px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 2px;
+}
+.header-title {
+  font-size: 12px;
+  color: var(--gold);
+  letter-spacing: .05em;
+  font-weight: bold;
+}
+.header-body {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 8px;
+}
+.header-lines { flex: 1; min-width: 0; }
+.header-line {
+  font-size: 12px;
+  color: var(--muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.6;
+}
+.header-actions { flex-shrink: 0; }
+
+/* ---------------------------------------------------------
+   View / Layout
+   --------------------------------------------------------- */
+.view {
+  display: none;
+  position: fixed;
+  top: var(--header-h);
+  bottom: calc(var(--tab-h) + var(--safe-b));
+  left: 0; right: 0;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+.view.active { display: block; }
+
+/* unreborn: タブを隠す */
+body.unreborn .tabs { display: none; }
+body.unreborn .view.active {
+  bottom: var(--safe-b);
+}
+
+.container {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 14px 14px calc(16px + var(--safe-b));
+}
+
+/* ---------------------------------------------------------
+   Start View
+   --------------------------------------------------------- */
+.start-card {
+  background: var(--bg-panel);
+  border: 1px solid var(--border-sub);
+  border-radius: var(--radius);
+  padding: 20px 16px;
+}
+.start-heading {
+  font-size: 15px;
+  color: var(--gold);
+  margin-bottom: 6px;
+}
+.start-desc {
+  font-size: 12px;
+  color: var(--muted);
+  margin-bottom: 10px;
+  line-height: 1.55;
+}
+.start-divider { margin: 18px 0; }
+.start-actions { margin-top: 10px; }
+
+.field { margin-bottom: 10px; }
+.field label {
+  display: block;
+  font-size: 12px;
+  color: var(--muted);
+  margin-bottom: 4px;
+}
+
+/* ---------------------------------------------------------
+   Tabs
+   --------------------------------------------------------- */
+.tabs {
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  height: calc(var(--tab-h) + var(--safe-b));
+  padding-bottom: var(--safe-b);
+  background: rgba(13,13,26,.96);
+  border-top: 1px solid var(--border-sub);
+  display: flex;
+  backdrop-filter: blur(8px);
+  z-index: 100;
+}
+.tab-btn {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  background: transparent;
+  color: var(--muted);
+  border-radius: 0;
+  padding: 6px 0;
+  font-size: 10px;
+  position: relative;
+}
+.tab-btn.active { color: var(--text); }
+.tab-ico { font-size: 20px; line-height: 1; }
+.tab-label { font-size: 10px; }
+.tab-dot {
+  width: 4px; height: 4px;
+  border-radius: 50%;
+  background: var(--border);
+  opacity: 0;
+  transition: opacity .2s;
+}
+.tab-btn.active .tab-dot { opacity: 1; }
+
+/* ---------------------------------------------------------
+   Tab Contents
+   --------------------------------------------------------- */
+.tab-content { display: none; }
+.tab-content.active { display: block; }
+
+/* ---------------------------------------------------------
+   Panel
+   --------------------------------------------------------- */
+.panel {
+  background: var(--bg-panel);
+  border: 1px solid var(--border-sub);
+  border-radius: var(--radius);
+  padding: 16px;
+  margin-bottom: 12px;
+}
+.panel-title {
+  font-size: 15px;
+  color: var(--gold);
+  margin-bottom: 14px;
+  border-bottom: 1px solid var(--border-sub);
+  padding-bottom: 8px;
+}
+
+/* ---------------------------------------------------------
+   HOME: Scene
+   --------------------------------------------------------- */
+.scene {
+  position: relative;
+  width: 100%;
+  border-radius: var(--radius);
+  overflow: hidden;
+  min-height: 220px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  padding-bottom: 20px;
+  transition: background .6s;
+  /* デフォルト背景 */
+  background: radial-gradient(ellipse at 50% 80%, #1a1a2e 0%, #0d0d1a 100%);
+}
+
+/* 属性別背景 */
+.scene.attr-volcano {
+  background: radial-gradient(ellipse at 50% 100%, #3a1500 0%, #1a0800 60%, #0d0d1a 100%);
+}
+.scene.attr-tornado {
+  background: radial-gradient(ellipse at 50% 100%, #001a2e 0%, #00101a 60%, #0d0d1a 100%);
+}
+.scene.attr-earthquake {
+  background: radial-gradient(ellipse at 50% 100%, #1a1200 0%, #0e0900 60%, #0d0d1a 100%);
+}
+.scene.attr-storm {
+  background: radial-gradient(ellipse at 50% 100%, #001433 0%, #000b1a 60%, #0d0d1a 100%);
+}
+
+/* 演出クラス */
+.scene.fx-superbest { animation: fx-pulse-gold .8s ease-in-out infinite alternate; }
+.scene.fx-best      { animation: fx-pulse-blue 1.2s ease-in-out infinite alternate; }
+.scene.fx-good      {}
+.scene.fx-bad       { animation: fx-pulse-dark 2s ease-in-out infinite alternate; }
+
+@keyframes fx-pulse-gold {
+  from { box-shadow: inset 0 0 40px rgba(255,200,0,.08); }
+  to   { box-shadow: inset 0 0 80px rgba(255,200,0,.22); }
+}
+@keyframes fx-pulse-blue {
+  from { box-shadow: inset 0 0 40px rgba(100,180,255,.06); }
+  to   { box-shadow: inset 0 0 60px rgba(100,180,255,.18); }
+}
+@keyframes fx-pulse-dark {
+  from { box-shadow: inset 0 0 60px rgba(0,0,0,.3); }
+  to   { box-shadow: inset 0 0 100px rgba(80,0,80,.4); }
+}
+
+/* シーン情報オーバーレイ */
+.scene-info {
+  position: absolute;
+  top: 10px; left: 10px; right: 10px;
+  background: rgba(0,0,0,.45);
+  border-radius: var(--radius-sm);
+  padding: 8px 10px;
+  backdrop-filter: blur(4px);
+}
+.scene-info-row {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  line-height: 1.7;
+}
+.scene-info-val {
+  font-size: 13px;
+  color: var(--text);
+  font-weight: bold;
+}
+.scene-preview {
+  font-size: 12px;
+  color: var(--gold);
+  margin-top: 2px;
+  min-height: 18px;
+}
+
+/* HP アラート */
+.hp-alert {
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  background: rgba(180,0,0,.75);
+  color: #fff;
+  font-size: 12px;
+  text-align: center;
+  padding: 4px 0;
+  z-index: 10;
+  animation: blink-alert 1s ease-in-out infinite alternate;
+}
+@keyframes blink-alert {
+  from { opacity: .7; }
+  to   { opacity: 1;  }
+}
+
+/* ---------------------------------------------------------
+   Sprite
+   --------------------------------------------------------- */
+.sprite-mover {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.sprite-viewport {
+  position: relative;
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+  overflow: hidden;
+}
+.sprite-sheet {
+  position: absolute;
+  top: 0; left: 0;
+  background-repeat: no-repeat;
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+}
+.sprite-fx {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  pointer-events: none;
+}
+
+/* ---------------------------------------------------------
+   HOME: ボトムアクション
+   --------------------------------------------------------- */
+.home-bottom-actions {
+  text-align: center;
+  margin-top: 10px;
+}
+
+/* ---------------------------------------------------------
+   パーティクル
+   --------------------------------------------------------- */
+.tsp-particle {
+  position: absolute;
+  pointer-events: none;
+  user-select: none;
+  will-change: transform, opacity;
+}
+
+.tsp-fly {
+  animation: anim-fly var(--tspDur, 1.4s) ease-out forwards;
+}
+.tsp-fall {
+  animation: anim-fall var(--tspDur, 1.8s) ease-in forwards;
+}
+.tsp-drift {
+  animation: anim-drift var(--tspDur, 2.2s) ease-in-out forwards;
+}
+
+@keyframes anim-fly {
+  0%   { transform: translate(0,0) rotate(0deg) scale(var(--tspS,1)); opacity:1; }
+  100% { transform: translate(var(--tspDX,0px), var(--tspDY,-100px))
+                    rotate(var(--tspR,0deg)) scale(calc(var(--tspS,1)*0.4));
+         opacity: 0; }
+}
+@keyframes anim-fall {
+  0%   { transform: translate(0,0) rotate(0deg) scale(var(--tspS,1)); opacity:.9; }
+  100% { transform: translate(var(--tspDX,0px), var(--tspDY,200px))
+                    rotate(var(--tspR,0deg)) scale(var(--tspS,1));
+         opacity: 0; }
+}
+@keyframes anim-drift {
+  0%   { transform: translate(0,0) rotate(0deg) scale(var(--tspS,1)); opacity:.8; }
+  60%  { opacity: .6; }
+  100% { transform: translate(var(--tspDX,0px), var(--tspDY,180px))
+                    rotate(var(--tspR,0deg)) scale(var(--tspS,1));
+         opacity: 0; }
+}
+
+/* ---------------------------------------------------------
+   ENV Tab
+   --------------------------------------------------------- */
+.env-grid { display: flex; flex-direction: column; gap: 14px; }
+
+.env-top-actions { display: flex; justify-content: flex-end; }
+
+.env-row { display: flex; flex-direction: column; gap: 6px; }
+.env-label {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 13px;
+}
+.env-label strong { color: var(--gold); font-size: 14px; }
+
+.range-wrap { padding: 0 2px; }
+input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 6px;
+  background: var(--border-sub);
+  border-radius: 3px;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+}
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 22px; height: 22px;
+  border-radius: 50%;
+  background: var(--border);
+  border: 2px solid #fff;
+  cursor: pointer;
+}
+input[type="range"]::-moz-range-thumb {
+  width: 22px; height: 22px;
+  border-radius: 50%;
+  background: var(--border);
+  border: 2px solid #fff;
+  cursor: pointer;
+}
+
+/* 光量ボタン */
+.light-buttons {
+  display: flex;
+  gap: 8px;
+}
+.light-btn {
+  flex: 1;
+  padding: 10px 0;
+  background: var(--bg-panel2);
+  color: var(--muted);
+  border: 1px solid var(--border-sub);
+  border-radius: var(--radius-sm);
+  font-size: 14px;
+  font-weight: bold;
+}
+.light-btn.active {
+  background: var(--border);
+  color: #fff;
+  border-color: var(--border);
+}
+
+/* 光量ガイド */
+.light-guide {
+  font-size: 12px;
+  color: var(--muted);
+  text-align: right;
+  min-height: 18px;
+}
+
+/* 予想環境 */
+.env-preview {
+  font-size: 13px;
+  color: var(--muted);
+  background: var(--bg-panel2);
+  border-radius: var(--radius-sm);
+  padding: 8px 10px;
+}
+.env-preview strong { color: var(--text); }
+
+.env-actions { }
+
+/* ---------------------------------------------------------
+   LEGENDZ Tab
+   --------------------------------------------------------- */
+.legendz-head {
+  background: var(--bg-panel2);
+  border-radius: var(--radius-sm);
+  padding: 10px 12px;
+  margin-bottom: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.kv-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+}
+.kv-label { color: var(--muted); min-width: 100px; font-size: 12px; }
+
+.nick-edit { margin-bottom: 14px; }
+.nick-edit .label-muted { display: block; font-size: 12px; margin-bottom: 4px; }
+.nick-row {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+.nick-row input { flex: 1; }
+
+.stat-grid {
+  background: var(--bg-panel2);
+  border-radius: var(--radius-sm);
+  padding: 10px 12px;
+  margin-bottom: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.stat-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 13px;
+  border-bottom: 1px solid var(--border-sub);
+  padding-bottom: 5px;
+}
+.stat-row:last-child { border-bottom: none; padding-bottom: 0; }
+.stat-label { color: var(--muted); }
+.stat-row strong { color: var(--gold); font-size: 14px; }
+
+/* 育成進捗 */
+.growth-progress {
+  margin-bottom: 14px;
+}
+.progress-bar-wrap {
+  height: 6px;
+  background: var(--border-sub);
+  border-radius: 3px;
+  margin-top: 4px;
+  overflow: hidden;
+}
+.progress-bar {
+  height: 100%;
+  background: var(--border);
+  border-radius: 3px;
+  transition: width .4s ease;
+}
+
+/* ワザ */
+.skills-title {
+  font-size: 13px;
+  color: var(--muted);
+  margin-bottom: 8px;
+  border-bottom: 1px solid var(--border-sub);
+  padding-bottom: 6px;
+}
+.skill-slots { display: flex; flex-direction: column; gap: 6px; }
+.skill-slot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--bg-panel2);
+  border-radius: var(--radius-sm);
+  padding: 8px 10px;
+  border: 1px solid var(--border-sub);
+}
+.skill-slot .slot-left { flex: 1; min-width: 0; }
+.skill-slot .slot-name {
+  font-size: 13px;
+  color: var(--text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.skill-slot .slot-meta { font-size: 11px; color: var(--muted); margin-top: 2px; }
+.skill-slot .slot-empty .slot-name { color: var(--muted); font-style: italic; }
+
+/* ---------------------------------------------------------
+   CRYSTAL Tab
+   --------------------------------------------------------- */
+.crystal-list { display: flex; flex-direction: column; gap: 8px; }
+.crystal-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--bg-panel2);
+  border-radius: var(--radius-sm);
+  padding: 10px 12px;
+  border: 1px solid var(--border-sub);
+}
+.crystal-info { flex: 1; }
+.crystal-name { font-size: 13px; color: var(--text); }
+.crystal-desc { font-size: 11px; color: var(--muted); margin-top: 2px; }
+.crystal-count { font-size: 18px; color: var(--gold); font-weight: bold; min-width: 32px; text-align: right; }
+
+/* ---------------------------------------------------------
+   Modal Backdrop
+   --------------------------------------------------------- */
+.modal-backdrop {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.65);
+  backdrop-filter: blur(4px);
+  z-index: 200;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+.modal-backdrop.active { display: flex; }
+
+.modal {
+  background: var(--bg-panel);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px;
+  width: 100%;
+  max-width: 420px;
+  max-height: 80vh;
+  overflow-y: auto;
+}
+.modal-title {
+  font-size: 15px;
+  color: var(--gold);
+  font-weight: bold;
+  margin-bottom: 12px;
+  border-bottom: 1px solid var(--border-sub);
+  padding-bottom: 8px;
+}
+.modal-body {
+  font-size: 13px;
+  color: var(--muted);
+  line-height: 1.6;
+  white-space: pre-wrap;
+  margin-bottom: 14px;
+}
+.modal-code {
+  width: 100%;
+  height: 80px;
+  font-size: 11px;
+  font-family: monospace;
+  background: var(--bg);
+  color: var(--text);
+  border: 1px solid var(--border-sub);
+  border-radius: var(--radius-sm);
+  padding: 8px;
+  resize: none;
+  margin-bottom: 12px;
+}
+.modal-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* ---------------------------------------------------------
+   Adventure Overlay
+   --------------------------------------------------------- */
+.adventure-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.6);
+  backdrop-filter: blur(3px);
+  z-index: 300;
+  display: none;
+  align-items: center;
+  justify-content: center;
+}
+.adventure-overlay.active { display: flex; }
+.adventure-overlay__box {
+  background: var(--bg-panel);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 18px 28px;
+  font-size: 15px;
+  color: var(--text);
+  text-align: center;
+  box-shadow: 0 20px 40px rgba(0,0,0,.5);
+  animation: fade-in-up .3s ease;
+}
+@keyframes fade-in-up {
+  from { opacity:0; transform:translateY(12px); }
+  to   { opacity:1; transform:translateY(0); }
+}
+
+/* ---------------------------------------------------------
+   Toast
+   --------------------------------------------------------- */
+#tspToast {
+  position: fixed;
+  left: 50%;
+  bottom: calc(var(--tab-h) + var(--safe-b) + 10px);
+  transform: translateX(-50%);
+  z-index: 400;
+  max-width: 92vw;
+  padding: 10px 16px;
+  border-radius: 20px;
+  background: rgba(20,20,40,.92);
+  border: 1px solid var(--border-sub);
+  color: var(--text);
+  font-size: 13px;
+  backdrop-filter: blur(8px);
+  pointer-events: none;
+  display: none;
+  white-space: pre-wrap;
+  text-align: center;
+  box-shadow: 0 8px 20px rgba(0,0,0,.4);
+}
+
+/* ---------------------------------------------------------
+   Utility
+   --------------------------------------------------------- */
+.label-muted { color: var(--muted); font-size: 12px; }
+
+/* ---------------------------------------------------------
+   Responsive（スマートフォン縦向き最適化）
+   --------------------------------------------------------- */
+@media (max-width: 400px) {
+  .header-line { font-size: 11px; }
+  .panel { padding: 12px; }
+  .scene { min-height: 200px; }
+}
+@media (min-width: 600px) {
+  .container { padding-left: 20px; padding-right: 20px; }
+}
