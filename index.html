@@ -1,0 +1,319 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="format-detection" content="telephone=no" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <title>【タリスポッド】</title>
+  <link rel="stylesheet" href="./css/app.css?v=079" />
+</head>
+
+<body class="unreborn">
+
+  <!-- ===================================================
+       HEADER
+       =================================================== -->
+  <header class="header" role="banner">
+    <div class="header-inner">
+      <div class="header-title">【タリスポッド】</div>
+      <div class="header-body">
+        <div class="header-lines">
+          <div id="headerLine1" class="header-line"></div>
+          <div id="headerLine2" class="header-line"></div>
+          <div id="headerLine3" class="header-line"></div>
+        </div>
+        <div class="header-actions">
+          <button id="comebackBtn" type="button" class="btn-sub">Comeback</button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ===================================================
+       START VIEW
+       =================================================== -->
+  <main id="startView" class="view active" role="main">
+    <div class="container">
+      <div class="start-card">
+
+        <h2 class="start-heading">サーガの名を刻め</h2>
+        <p class="start-desc">サーガ名はソウルドールコードの認証キーになります。忘れないようにしてください。</p>
+        <div class="field">
+          <label for="sagaInput">サーガ名 / Saga Name</label>
+          <input id="sagaInput" type="text" inputmode="text" autocomplete="off"
+                 placeholder="例：TalisHero" maxlength="20" />
+        </div>
+
+        <hr class="start-divider" />
+
+        <h2 class="start-heading">ソウルドールの記憶からリボーン</h2>
+        <p class="start-desc">以前のソウルドールコード（SOUL1:〜）を貼り付けてください。</p>
+        <div class="field">
+          <label for="soulTextInput">ソウルドールコード / Soul Code</label>
+          <textarea id="soulTextInput" rows="3"
+                    placeholder="SOUL1:..."></textarea>
+        </div>
+        <div class="start-actions">
+          <button id="textRebornBtn" type="button" class="btn-primary">
+            記憶からリボーンする / Reborn from Memory
+          </button>
+        </div>
+
+        <hr class="start-divider" />
+
+        <h2 class="start-heading">新たなソウルドールを見つける</h2>
+        <p class="start-desc">初期レジェンズ「ウインドラゴン / Windragon」でスタートします。</p>
+        <div class="start-actions">
+          <button id="newSoulBtn" type="button" class="btn-primary">
+            ソウルドールを見つける / Find Soul Doll
+          </button>
+        </div>
+
+      </div>
+    </div>
+  </main>
+
+  <!-- ===================================================
+       MAIN VIEW
+       =================================================== -->
+  <main id="mainView" class="view" role="main">
+    <div class="container">
+
+      <!-- ================ HOME ================ -->
+      <section id="tab-home" class="tab-content active">
+
+        <div id="scene" class="scene attr-none">
+
+          <!-- 環境・成長情報 -->
+          <div class="scene-info">
+            <div class="scene-info-row">
+              <span class="label-muted">環境 / Env</span>
+              <span id="envAttributeLabel" class="scene-info-val">無属性 / Neutral</span>
+            </div>
+            <div class="scene-info-row">
+              <span class="label-muted">育成 / Growth</span>
+              <span id="growthTimer" class="scene-info-val">環境成長なし / No Growth</span>
+            </div>
+            <div id="growthPreview" class="scene-preview"></div>
+          </div>
+
+          <!-- HP危機アラート -->
+          <div id="hpAlert" class="hp-alert" style="display:none;">
+            ⚠️ HP残量わずか / Low HP
+          </div>
+
+          <!-- スプライト -->
+          <div id="spriteMover" class="sprite-mover">
+            <div id="spriteViewport" class="sprite-viewport">
+              <div id="spriteSheetLayer" class="sprite-sheet"></div>
+              <div id="spriteFxLayer" class="sprite-fx"></div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- 無属性ボタン（scene外） -->
+        <div class="home-bottom-actions">
+          <button id="homeNeutralBtn" type="button" class="btn-ghost"
+                  style="display:none;">
+            無属性環境にする / Set Neutral
+          </button>
+        </div>
+
+      </section>
+
+      <!-- ================ ENV ================ -->
+      <section id="tab-environment" class="tab-content">
+        <div class="panel">
+          <h2 class="panel-title">環境 / Environment</h2>
+
+          <div class="env-grid">
+
+            <div class="env-top-actions">
+              <button id="neutralBtn" type="button" class="btn-ghost btn-sm">
+                無属性に戻す / Reset Neutral
+              </button>
+            </div>
+
+            <!-- 温度 -->
+            <div class="env-row">
+              <div class="env-label">
+                <span>温度 / Temp</span>
+                <strong id="tempValue">0℃</strong>
+              </div>
+              <div class="range-wrap">
+                <input id="tempSlider" type="range" value="10" />
+              </div>
+            </div>
+
+            <!-- 湿度 -->
+            <div class="env-row">
+              <div class="env-label">
+                <span>湿度 / Humidity</span>
+                <strong id="humidityValue">50％</strong>
+              </div>
+              <div class="range-wrap">
+                <input id="humiditySlider" type="range" value="10" />
+              </div>
+            </div>
+
+            <!-- 光量 -->
+            <div class="env-row">
+              <div class="env-label">
+                <span id="lightLabel">光量 / Light</span>
+                <strong id="lightValue">50</strong>
+              </div>
+              <div class="light-buttons" role="group" aria-label="light level">
+                <button id="lightBtn0"   type="button" class="light-btn"        data-light="0">0</button>
+                <button id="lightBtn50"  type="button" class="light-btn active" data-light="50">50</button>
+                <button id="lightBtn100" type="button" class="light-btn"        data-light="100">100</button>
+              </div>
+            </div>
+
+            <!-- 期待光量ガイド -->
+            <div id="lightGuide" class="light-guide"></div>
+
+            <!-- 予想環境 -->
+            <div class="env-preview">
+              予想 / Preview：<strong id="envPreviewLabel">無属性 / Neutral</strong>
+            </div>
+
+            <!-- 決定 -->
+            <div class="env-actions">
+              <button id="applyEnvBtn" type="button" class="btn-primary">
+                環境決定 / Apply
+              </button>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      <!-- ================ LEGENDZ ================ -->
+      <section id="tab-legendz" class="tab-content">
+        <div class="panel">
+          <h2 class="panel-title">レジェンズ / Legendz</h2>
+
+          <!-- 種族・属性 -->
+          <div class="legendz-head">
+            <div class="kv-row">
+              <span class="kv-label">種族 / Species</span>
+              <strong id="speciesName">-</strong>
+            </div>
+            <div class="kv-row">
+              <span class="kv-label">属性 / Attr</span>
+              <strong id="legendzAttribute">-</strong>
+            </div>
+          </div>
+
+          <!-- ニックネーム -->
+          <div class="nick-edit">
+            <label for="nicknameInput" class="label-muted">
+              ニックネーム / Nickname
+            </label>
+            <div class="nick-row">
+              <input id="nicknameInput" type="text" autocomplete="off"
+                     maxlength="15" placeholder="未設定" />
+              <button id="nicknameApplyBtn" type="button" class="btn-sub btn-sm">
+                変更 / Change
+              </button>
+            </div>
+          </div>
+
+          <!-- ステータス -->
+          <div class="stat-grid">
+            <div class="stat-row">
+              <span class="stat-label">HP</span>
+              <strong id="hpStat">-</strong>
+            </div>
+            <div class="stat-row">
+              <span class="stat-label">マホウ / Magic</span>
+              <strong id="magicStat">-</strong>
+            </div>
+            <div class="stat-row">
+              <span class="stat-label">カウンター / Counter</span>
+              <strong id="counterStat">-</strong>
+            </div>
+            <div class="stat-row">
+              <span class="stat-label">ダゲキ / Attack</span>
+              <strong id="attackStat">-</strong>
+            </div>
+            <div class="stat-row">
+              <span class="stat-label">カイフク / Recover</span>
+              <strong id="recoverStat">-</strong>
+            </div>
+          </div>
+
+          <!-- 育成進捗 -->
+          <div class="growth-progress">
+            <div class="kv-row">
+              <span class="kv-label">HP育成 / HP Growth</span>
+              <span id="growHPProgress">0 / 5110</span>
+            </div>
+            <div class="progress-bar-wrap">
+              <div id="growHPBar" class="progress-bar" style="width:0%"></div>
+            </div>
+          </div>
+
+          <!-- ワザ -->
+          <div class="skills">
+            <h3 class="skills-title">ワザ / Moves</h3>
+            <div id="skillSlots" class="skill-slots"></div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ================ CRYSTAL ================ -->
+      <section id="tab-crystal" class="tab-content">
+        <div class="panel">
+          <h2 class="panel-title">クリスタル / Crystal</h2>
+          <p class="label-muted" style="font-size:12px; margin-bottom:12px;">
+            ※クリスタル使用機能はv0.8で実装予定
+          </p>
+          <div id="crystalList" class="crystal-list"></div>
+        </div>
+      </section>
+
+    </div><!-- /container -->
+  </main><!-- /mainView -->
+
+  <!-- ===================================================
+       TAB NAV
+       =================================================== -->
+  <nav class="tabs" aria-label="main tabs">
+    <button class="tab-btn active" data-tab="home" type="button">
+      <span class="tab-ico">🏠</span>
+      <span class="tab-label">Home</span>
+      <span class="tab-dot"></span>
+    </button>
+    <button class="tab-btn" data-tab="environment" type="button">
+      <span class="tab-ico">🌡️</span>
+      <span class="tab-label">Env</span>
+      <span class="tab-dot"></span>
+    </button>
+    <button class="tab-btn" data-tab="legendz" type="button">
+      <span class="tab-ico">🐉</span>
+      <span class="tab-label">Legendz</span>
+      <span class="tab-dot"></span>
+    </button>
+    <button class="tab-btn" data-tab="crystal" type="button">
+      <span class="tab-ico">💎</span>
+      <span class="tab-label">Crystal</span>
+      <span class="tab-dot"></span>
+    </button>
+  </nav>
+
+  <!-- ===================================================
+       SCRIPTS
+       読み込み順：state → areaMap → areaResolver → game → app
+       =================================================== -->
+  <script src="./js/state.js?v=079"></script>
+  <script src="./js/areaMap.js?v=079"></script>
+  <script src="./js/areaResolver.js?v=079"></script>
+  <script src="./js/game.js?v=079"></script>
+  <script src="./js/app.js?v=079"></script>
+
+</body>
+</html>
